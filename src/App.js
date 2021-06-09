@@ -1,9 +1,13 @@
 import './App.css';
+import Title from './components/Title';
+import UploadForm from './components/UploadForm';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello</h1>
+        <Title />
+
+        <UploadForm />
     </div>
   );
 }
