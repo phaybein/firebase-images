@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react';
-import { projectFirestore, projectStorage } from '../firebase/config';
+import { projectStorage, projectFirestore, timestamp } from '../firebase/config';
 
 const useStorage = file => {
     const [ progress, setProgress ] = useState(0);
@@ -8,19 +8,21 @@ const useStorage = file => {
 
     useEffect(() => {
         // References
-        const storageRef = projectFirestore.ref(file.name);
+        const storageRef = projectStorage.ref(file.name);
+        const collectionRef = projectFirestore.collection('images');
 
         // Upload file
         storageRef.put(file).on('state_changed', snap => {
             let perentage = (snap.bytesTransferred / snap.totalBytes) * 100;
             setProgress(perentage);
-
         }, err => {
             setError(err)
         }, async () => {
-            const url = await storageRef.getdDownloadURL();
+            const url = await storageRef.getDownloadURL();
+            const createdAt = timestamp();
+            collectionRef.add({ url, createdAt })
             setUrl(url)
-        });
+        })
     }, [file]);
 
     return { progress, url, error }
