@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import useStorage from '../hooks/useStorage';
+import { motion } from 'framer-motion';
 
 
 export default function ProgressBar({ file, setFile }) {
@@ -13,12 +14,12 @@ export default function ProgressBar({ file, setFile }) {
     }, [url, setFile]);
 
     return (
-        <div className='progress-bar'
-            style={{
-                width: `${progress} %`
-            }}
+        <motion.div
+            className='progress-bar'
+            initial={{ width: 0 }}
+            animate={{ width: progress + '%' }}
         >
             {/* <progress value={progress} max='100' /> */}
-        </div>
+        </motion.div>
     )
 }
